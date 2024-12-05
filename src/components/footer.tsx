@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export const Footer = () => (
   <footer className='bg-background h-16 flex items-center border-t'>
-    <div className='container flex items-center flex-wrap justify-between px-4 md:px-6'>
+    <div className='w-full flex items-center flex-wrap justify-between px-4 md:px-6'>
       <Link href='#' className='text-lg font-bold' prefetch={false}>
         EngramSoft
       </Link>

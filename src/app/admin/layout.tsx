@@ -17,12 +17,10 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
       .eq('id', authData.user.id)
       .single();
 
-    if (error || !data) {
-      console.log('error', error);
-      return;
+    if (error || !data || data.type !== ADMIN) {
+      console.log('error', error, data?.type);
+      return redirect('/');
     }
-
-    if (data.type === ADMIN) return redirect('/');
   }
   return (
     <RenderMounted>
