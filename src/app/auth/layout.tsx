@@ -3,7 +3,7 @@ import { createClient } from '@/supabase/server';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
 
-const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
+const AuthLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
   const supabase = await createClient();
   const { data: authData } = await supabase.auth.getUser();
 
@@ -19,9 +19,12 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
       return;
     }
 
-    if (data.type === ADMIN) return redirect('/');
+    if (data.type === ADMIN) {
+      return redirect('/');
+    }
   }
+
   return <>{children}</>;
 };
 
-export default RootLayout;
+export default AuthLayout;
