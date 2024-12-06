@@ -15,7 +15,7 @@ export type Database = {
           id: number
           imageUrl: string
           name: string
-          products: number[]
+          products: number[] | null
           slug: string
         }
         Insert: {
@@ -23,7 +23,7 @@ export type Database = {
           id?: number
           imageUrl: string
           name: string
-          products: number[]
+          products?: number[] | null
           slug: string
         }
         Update: {
@@ -31,7 +31,7 @@ export type Database = {
           id?: number
           imageUrl?: string
           name?: string
-          products?: number[]
+          products?: number[] | null
           slug?: string
         }
         Relationships: []
