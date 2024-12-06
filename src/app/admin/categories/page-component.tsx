@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -35,7 +34,12 @@ import {
 } from '@/app/admin/categories/create-category.schema';
 import { CategoriesWithProductsResponse } from '@/app/admin/categories/categories.types';
 import { CategoryForm } from '@/app/admin/categories/category-form';
-import { createCategory, imageUploadHandler } from '@/actions/categories';
+import {
+  createCategory,
+  deleteCategory,
+  imageUploadHandler,
+  updateCategory,
+} from '@/actions/categories';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -61,22 +65,57 @@ const CategoryPageComponent = ({ categories }: Props) => {
   const submitCategoryHandler: SubmitHandler<
     CreateCategorySchema
   > = async data => {
-    const uniqueId = uuid();
-    const fileName = `category/category-${uniqueId}`;
-    const file = new File([data.image[0]], fileName);
-    const formData = new FormData();
-    formData.append('file', file);
+    const { image, name, intent = 'create' } = data;
 
-    // upload image to supabase storage
-    const imageUrl = await imageUploadHandler(formData);
+    const handleImageUpload = async () => {
+      const uniqueId = uuid();
+      const fileName = `category/category-${uniqueId}`;
+      const file = new File([data.image[0]], fileName);
+      const formData = new FormData();
+      formData.append('file', file);
 
-    if (imageUrl) {
-      await createCategory({ imageUrl, name: data.name });
-      form.reset();
-      router.refresh();
-      setIsCreateCategoryModalOpen(false);
-      toast.success('Category created successfully');
+      return imageUploadHandler(formData);
+    };
+
+    switch (intent) {
+      case 'create':
+        const imageUrl = await handleImageUpload();
+        if (imageUrl) {
+          await createCategory({ imageUrl, name });
+          form.reset();
+          router.refresh();
+          setIsCreateCategoryModalOpen(false);
+          toast.success('Category created successfully');
+        }
+        break;
+      case 'update':
+        if (image && currentCategory?.slug) {
+          const imageUrl = await handleImageUpload();
+          if (imageUrl) {
+            await updateCategory({
+              imageUrl,
+              name,
+              slug: currentCategory.slug,
+              intent: 'update',
+            });
+            form.reset();
+            router.refresh();
+            setIsCreateCategoryModalOpen(false);
+            toast.success('Category updated successfully');
+          }
+        }
+
+        break;
+      default:
+        console.log('Invalid intent');
+        break;
     }
+  };
+
+  const deleteCategoryHandler = async (id: number) => {
+    await deleteCategory(id);
+    router.refresh();
+    toast.success('Category deleted successfully');
   };
 
   return (
@@ -143,6 +182,7 @@ const CategoryPageComponent = ({ categories }: Props) => {
                   category={category}
                   setCurrentCategory={setCurrentCategory}
                   setIsCreateCategoryModalOpen={setIsCreateCategoryModalOpen}
+                  deleteCategoryHandler={deleteCategoryHandler}
                 />
               ))}
             </TableBody>
