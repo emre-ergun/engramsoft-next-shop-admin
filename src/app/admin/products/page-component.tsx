@@ -220,7 +220,10 @@ const ProductPageComponent = ({
         />
 
         {/* Delete Product Modal */}
-        <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+        <Dialog
+          open={isDeleteModalOpen}
+          onOpenChange={() => setIsDeleteModalOpen(!isDeleteModalOpen)}
+        >
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Delete Product</DialogTitle>
