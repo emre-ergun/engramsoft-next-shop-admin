@@ -61,6 +61,7 @@ export const CategoryTableRow = ({
         <TableCell className='sm:table-cell'>
           <Image
             alt='Product image'
+            priority
             className='aspect-square rounded-md object-cover'
             height='64'
             src={category.imageUrl}
@@ -96,6 +97,7 @@ export const CategoryTableRow = ({
                             height='100'
                             src={product.heroImage}
                             width='100'
+                            priority
                           />
                           <div className='flex flex-col space-y-1'>
                             <h3 className='font-medium leading-none'>
