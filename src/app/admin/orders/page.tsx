@@ -1,4 +1,5 @@
 import { getOrdersWithProducts } from '@/actions/orders';
+import OrdersPageComponent from './page-component';
 
 const Orders = async () => {
   const ordersWithProducts = await getOrdersWithProducts();
@@ -8,7 +9,11 @@ const Orders = async () => {
       <div className='text-center font-bold text-2xl'>No Orders Found</div>
     );
 
-  return <div>Orders</div>;
+  return (
+    <div>
+      <OrdersPageComponent ordersWithProducts={ordersWithProducts} />
+    </div>
+  );
 };
 
 export default Orders;
