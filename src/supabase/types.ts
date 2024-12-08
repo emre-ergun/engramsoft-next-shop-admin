@@ -39,7 +39,7 @@ export type Database = {
       order: {
         Row: {
           created_at: string
-          description: string
+          description: string | null
           id: number
           slug: string
           status: string
@@ -48,7 +48,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          description: string
+          description?: string | null
           id?: number
           slug: string
           status: string
@@ -57,7 +57,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          description?: string
+          description?: string | null
           id?: number
           slug?: string
           status?: string
@@ -186,7 +186,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      decrement_product_quantity: {
+        Args: {
+          product_id: number
+          quantity: number
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
