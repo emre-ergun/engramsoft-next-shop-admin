@@ -1,4 +1,4 @@
-# Emre's Portfolio
+# Shop Admin Dashboard
 
 It is admin dashboard application developed for mobile shopping application to control products, categories and orders.
 
