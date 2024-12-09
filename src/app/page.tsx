@@ -171,21 +171,21 @@ export default function Home() {
                 Experience the future of gadget shopping at your fingertips.
               </p>
               <div className='flex flex-wrap justify-center gap-4 md:gap-0 md:flex-nowrap md:space-x-4'>
-                <Button size='lg' className='bg-white hover:bg-indigo-100'>
+                <Button size='lg' className='dark:bg-white bg-black hover:bg-indigo-100'>
                   <Image
                     src='/apple.jpeg'
                     alt='App Store'
-                    className='mr-2 h-6 w-6'
+                    className='mr-2 h-6 w-6 rounded-lg'
                     height={24}
                     width={24}
                   />
                   App Store
                 </Button>
-                <Button size='lg' className='bg-white hover:bg-indigo-100'>
+                <Button size='lg' className='dark:bg-white bg-black hover:bg-indigo-100'>
                   <Image
                     src='/google-play.png'
                     alt='Google Play'
-                    className='mr-2 h-6 w-6'
+                    className='mr-2 h-6 w-6 rounded-lg'
                     height={24}
                     width={24}
                   />
@@ -247,11 +247,11 @@ export default function Home() {
 
       <footer className='bg-[#1BC464] text-white'>
         <Link
-          href={`https://www.youtube.com/@codewithlari`}
+          href={`https://portfolio.engramsoft.com`}
           target='_blank'
           className='container mx-auto px-4 text-center'
         >
-          <p>@ codewithlari</p>
+          <p>EngramSoft</p>
         </Link>
       </footer>
     </div>
