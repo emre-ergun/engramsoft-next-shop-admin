@@ -5,6 +5,7 @@ import {
   UpdateCategorySchema,
 } from '@/app/admin/categories/create-category.schema';
 import { createClient } from '@/supabase/server';
+import { revalidatePath } from 'next/cache';
 import slugify from 'slugify';
 
 export const getCategoriesWithProducts =
@@ -67,6 +68,8 @@ export const createCategory = async ({
 
   if (error) throw new Error(`Error creating category: ${error.message}`);
 
+  revalidatePath('/admin/categories');
+
   return data;
 };
 
@@ -84,6 +87,8 @@ export const updateCategory = async ({
 
   if (error) throw new Error(`Error updating category: ${error.message}`);
 
+  revalidatePath('/admin/categories');
+
   return data;
 };
 
@@ -93,4 +98,24 @@ export const deleteCategory = async (id: number) => {
   const { error } = await supabase.from('category').delete().match({ id });
 
   if (error) throw new Error(`Error deleting category: ${error.message}`);
+
+  revalidatePath('/admin/categories');
+};
+
+export const getCategoryData = async () => {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('category')
+    .select('name, products:product(id)');
+
+  if (error) throw new Error(`Error fetching category data: ${error.message}`);
+
+  const categoryData = data.map(
+    (category: { name: string; products: { id: number }[] }) => ({
+      name: category.name,
+      products: category.products.length,
+    })
+  );
+
+  return categoryData;
 };
