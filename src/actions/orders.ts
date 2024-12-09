@@ -2,6 +2,7 @@
 
 import { createClient } from '@/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { sendNotification } from './notifications';
 
 export const getOrdersWithProducts = async () => {
   const supabase = await createClient();
@@ -24,15 +25,17 @@ export const updateOrderStatus = async (orderId: number, status: string) => {
 
   if (error) throw new Error(error.message);
 
+  const { data, error: err } = await supabase
+    .from('order')
+    .select('*')
+    .eq('id', orderId)
+    .single();
+
+  if (err) throw new Error(err.message);
+
+  await sendNotification(data?.user, status + ' 🚀');
+
   revalidatePath('api/orders');
-
-  //   const {
-  //     data: { session },
-  //   } = await supabase.auth.getSession();
-
-  //   const userId = session?.user.id!;
-
-  //   await sendNotification(userId, status + ' 🚀');
 };
 
 export const getMonthlyOrders = async () => {
